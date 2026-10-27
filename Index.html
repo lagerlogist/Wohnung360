@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>360° Wohnungsbesichtigung</title>
+    <link rel="stylesheet" href="https://jsdelivr.net"/>
+    <script type="text/javascript" src="https://jsdelivr.net"></script>
+    <style>
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; font-family: sans-serif; }
+        #container { display: flex; width: 100%; height: 100%; }
+        #panorama { flex-grow: 1; height: 100%; }
+        #menu { width: 200px; background: rgba(0, 0, 0, 0.85); color: white; padding: 15px; box-sizing: border-box; display: flex; flex-direction: column; gap: 10px; z-index: 10; overflow-y: auto; }
+        #menu h3 { margin-top: 0; font-size: 16px; border-bottom: 1px solid #555; padding-bottom: 8px; }
+        .menu-btn { background: #333; color: white; border: none; padding: 10px; text-align: left; cursor: pointer; border-radius: 4px; transition: background 0.2s; font-size: 14px; }
+        .menu-btn:hover { background: #555; }
+        .menu-btn.active { background: #007acc; font-weight: bold; }
+        @media (max-width: 600px) {
+            #container { flex-direction: column-reverse; }
+            #menu { width: 100%; height: 120px; flex-direction: row; overflow-x: auto; overflow-y: hidden; padding: 10px; }
+            #menu h3 { display: none; }
+            .menu-btn { white-space: nowrap; height: 40px; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="container">
+    <!-- Das Menü für die Räume auf der linken Seite (bzw. unten auf dem Smartphone) -->
+    <div id="menu">
+        <h3>Räume wählen</h3>
+        <button class="menu-btn active" onclick="loadRoom('raum1', this)">Balkon</button>
+        <button class="menu-btn" onclick="loadRoom('raum2', this)">Raum 2</button>
+        <button class="menu-btn" onclick="loadRoom('raum3', this)">Raum 3</button>
+        <button class="menu-btn" onclick="loadRoom('raum4', this)">Raum 4</button>
+        <button class="menu-btn" onclick="loadRoom('raum5', this)">Raum 5</button>
+        <button class="menu-btn" onclick="loadRoom('raum6', this)">Raum 6</button>
+        <button class="menu-btn" onclick="loadRoom('raum7', this)">Raum 7</button>
+        <button class="menu-btn" onclick="loadRoom('raum8', this)">Raum 8</button>
+        <button class="menu-btn" onclick="loadRoom('raum9', this)">Raum 9</button>
+        <button class="menu-btn" onclick="loadRoom('raum10', this)">Raum 10</button>
+    </div>
+    
+    <!-- Der 360-Grad-Viewer -->
+    <div id="panorama"></div>
+</div>
+
+<script>
+    // Die genaue Zuordnung zu deinen iPhone-Dateinamen (wichtig: .JPG in Großbuchstaben!)
+    const rooms = {
+        "raum1": "raum1.JPG",
+        "raum2": "raum2.JPG",
+        "raum3": "raum3.JPG",
+        "raum4": "raum4.JPG",
+        "raum5": "raum5.JPG",
+        "raum6": "raum6.JPG",
+        "raum7": "raum7.JPG",
+        "raum8": "raum8.JPG",
+        "raum9": "raum9.JPG",
+        "raum10": "raum10.JPG"
+    };
+
+    // Initialisierung des Viewers mit dem Balkon (raum1)
+    let viewer = pannellum.viewer('panorama', {
+        "type": "equirectangular",
+        "panorama": rooms["raum1"],
+        "autoLoad": true
+    });
+
+    // Funktion, die beim Klicken auf einen Button den Raum wechselt
+    function loadRoom(roomKey, button) {
+        viewer.setPanorama(rooms[roomKey]);
+        
+        // Aktiven Button optisch hervorheben
+        document.querySelectorAll('.menu-btn').forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+    }
+</script>
+
+</body>
+</html>
