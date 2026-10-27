@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>360° Wohnungsbesichtigung</title>
+    <link rel="stylesheet" href="https://jsdelivr.net"/>
+    <script type="text/javascript" src="https://jsdelivr.net"></script>
+    <style>
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; font-family: sans-serif; }
+        #container { display: flex; width: 100%; height: 100%; }
+        #panorama { flex-grow: 1; height: 100%; }
+        #menu { width: 200px; background: rgba(0, 0, 0, 0.85); color: white; padding: 15px; box-sizing: border-box; display: flex; flex-direction: column; gap: 10px; z-index: 10; overflow-y: auto; }
+        #menu h3 { margin-top: 0; font-size: 16px; border-bottom: 1px solid #555; padding-bottom: 8px; }
+        .menu-btn { background: #333; color: white; border: none; padding: 10px; text-align: left; cursor: pointer; border-radius: 4px; transition: background 0.2s; font-size: 14px; }
+        .menu-btn:hover { background: #555; }
+        .menu-btn.active { background: #007acc; font-weight: bold; }
+        @media (max-width: 600px) {
+            #container { flex-direction: column-reverse; }
+            #menu { width: 100%; height: 120px; flex-direction: row; overflow-x: auto; overflow-y: hidden; padding: 10px; }
+            #menu h3 { display: none; }
+            .menu-btn { white-space: nowrap; height: 40px; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="container">
+    <div id="menu">
+        <h3>Räume wählen</h3>
+        <button class="menu-btn active" onclick="loadRoom('raum1', this)">Balkon</button>
+        <button class="menu-btn" onclick="loadRoom('raum2', this)">Schlafzimmer</button>
+        <button class="menu-btn" onclick="loadRoom('raum3', this)">Wohnzimmer</button>
+        <button class="menu-btn" onclick="loadRoom('raum4', this)">Küche</button>
+        <button class="menu-btn" onclick="loadRoom('raum5', this)">Badezimmer</button>
+    </div>
+    <div id="panorama"></div>
+</div>
+
+<script>
+    const rooms = {
+        "raum1": "bild1.jpg", // Das ist dein Balkon-Foto (image_YvhGDH.png)
+        "raum2": "bild2.jpg",
+        "raum3": "bild3.jpg",
+        "raum4": "bild4.jpg",
+        "raum5": "bild5.jpg"
+    };
+
+    let viewer = pannellum.viewer('panorama', {
+        "type": "equirectangular",
+        "panorama": rooms["raum1"],
+        "autoLoad": true
+    });
+
+    function loadRoom(roomKey, button) {
+        viewer.setPanorama(rooms[roomKey]);
+        document.querySelectorAll('.menu-btn').forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+    }
+</script>
+
+</body>
+</html>
